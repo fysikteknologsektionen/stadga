@@ -1,36 +1,53 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[swedish]{babel}
 \usepackage{lmodern}
 \usepackage[dvips]{graphicx}
-\usepackage{latexsym}
-\usepackage{color}
-\usepackage[swedish]{babel}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{amssymb}
-\usepackage{moreverb}
-\usepackage{textfit}
-\usepackage{textcomp}
-\usepackage{eurosym}
-\usepackage{hyperref}
-\hypersetup{
-    linktoc=all
-}
+\usepackage{color} % Behövs för loggan på titelsidan
+\usepackage{fancyhdr} % För headers
+\usepackage{lastpage} % För att kunna referera till sistasidan i footern
+\usepackage[linktoc=all]{hyperref} % linktoc=all gör sidnumrena i innehållsförteckningen klickbara
+\usepackage[top=25mm, left=20mm, right=20mm, bottom=30mm]{geometry} % Argumenten beskriver marginalerna
+\usepackage{titlesec} % Används för att kunna lägga till funktionalitet till \(sub)(sub)section
+\usepackage{enumitem} % Används för att kunna justera avstånd och annat i itemize och enumerate
+\usepackage{tocloft} % Används för att ändra stilen på innehållsförteckningen
 
-\fancyhead[R]{Stadga för Fysikteknologsektionen}
-\fancyfoot[C]{\thepage{} av~\pageref{LastPage}}
+%%%% Headerstil %%%%
 \pagestyle{fancy}
+\fancyhead[L]{\includegraphics[height=3.5\baselineskip]{sektionslogo.png}}
+\fancyhead[R]{
+Stadga för Fysikteknologsektionen \\
+\rightmark \vspace{.3em}}
+\fancyfoot[C]{\thepage{} av~\pageref{LastPage}}
+\headheight 52pt
+\headsep 1.5em
+\renewcommand{\sectionmark}[1]{\uppercase{\markright{#1}}} % Tar bort sectionnumret från headern
+
+%%%% Innehållsförteckningsstil %%%%
+\tocloftpagestyle{fancy} % Fixar headern på första innehållsförteckningssidan
+\renewcommand{\cfttoctitlefont}{\hfill\Huge\bfseries} % Ändrar utseendet på ''Innehåll'' i innehållsförteckningen
+\renewcommand{\cftaftertoctitle}{\hfill} % Centrerar ''Innehåll''
+\cftparskip .4ex % Ändrar mellanrummet mellan rubrikerna i innehållsförteckningen
+
+%%%% Paragrafhantering %%%%
+\setlist[itemize]{label=\textbullet, labelsep=1.2em} % Ändrar defaultlabeln för itemize till en punkt på alla nivåer och ger lite mer mellanrum ut till paragrafnumret
+\newlength{\sectitlew}\setlength{\sectitlew}{14mm} % Paragrafspaltens bredd
+\newcounter{par}[subsubsection] % Paragrafräknare
+\renewcommand\thepar{\thelevel.\arabic{par}} % Omdefinitionen görs för att smidigt kunna referera till paragrafer med \ref. \thelevel definieras nedan
+\newcommand{\pgf}{\refstepcounter{par} \item[\textsl{\thepar}]} % Stegar countern och låter countern refereras till med \ref. \textsl lutar texten utan att ändra typsnitt som \textit gör
+\titleformat{\section}[block]{\newpage\hspace*{-\sectitlew}\Large\bfseries}{\thesection}{1em}{\global\let\thelevel\thesection}      % Dessa tre rader justerar för indenteringen från paragraf-itemeizen
+\titleformat{\subsection}[block]{\hspace*{-\sectitlew}\large\bfseries}{\thesubsection}{1em}{\global\let\thelevel\thesubsection}     % De ändrar även \thelevel till den aktuella section-nivån
+\titleformat{\subsubsection}[block]{\hspace*{-\sectitlew}\bfseries}{\thesubsubsection}{1em}{\global\let\thelevel\thesubsubsection}  % \thelevel används sedan av paragrafräknaren
+
+%%%% Övrigt %%%%%
 \setlength{\parskip}{8pt}
-\setlength{\parindent}{0pt}
-\usepackage{enumerate}
-\usepackage[normalem]{ulem}
 
 \begin{document}
 
 % Titelsidan
-
-\setlength{\headheight}{14pt}
+\thispagestyle{empty} % Tar bort header och footer på omslaget
+\pagenumbering{gobble} % Ser till att omslaget inte räknas med i sidnumreringen
 \begin{center}
   \textbf{\Huge{Stadga för}}\\[3mm]
   \textbf{\Huge{Fysikteknologsektionen}}\\
@@ -38,7 +55,7 @@
   \textbf{\Large{Chalmers Studentkår}}
 
   \vspace{1.25em}
-  \includegraphics[width=10em]{sektionslogo.eps}
+  \includegraphics[width=8cm]{sektionslogo.eps}
   \vspace{1.25em}
 
   Utarbetad våren 2002.
@@ -61,1289 +78,646 @@
   Omarbetad av en av sektionsmötet tillsatt arbetsgrupp hösten 2014
   
   Uppdaterad av sektionsstyrelsen våren 2017
+  
+  \vfill
 
   Fortsatta ändringar finns tillgängliga på\\
   \href{https://github.com/Fysikteknologsektionen/Stadga/commits/master}{\texttt{github.com/Fysikteknologsektionen/Stadga/}}\\[5mm]
 
   \small{Göteborg}\\
-%   \small{\today}
   \small{15:e januari 2020}
+  \vspace{2.5em} % Det här vspacet är nödvändigt för att slippa header/footer på omslaget. Jag har ingen aning om varför
 \end{center}
 
-\clearpage
+\pagenumbering{arabic} % Återställer sidnumreringen
 \tableofcontents
-\clearpage
 
-
-% Dokument
-
+\begin{itemize}[leftmargin=\sectitlew] % leftmargin reglerar paragrafspaltens bredd. labelsep reglerar avståndet mellan paragrafnummer och text
 
 \section{Allmänt}
-
-
-\subsection{Ändamål}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Fysikteknologsektionen, benämns nedan som sektionen, vid Chalmers studentkår är en ideell förening bestående av studerande vid utbildningsprogrammen Teknisk fysik eller Teknisk matematik vid Chalmers tekniska högskola och av studenter vid därtill associerade mastersprogram som betalt sektionsavgift.
-
-  \item Sektionen har till uppgift att verka för samman\-hållning mellan
-  med\-lem\-mar\-na och tillvarata deras gemensamma intressen i
-  ut\-bild\-nings\-fråg\-or och studiesociala frågor.
-
-  \item Sektionen har även till uppgift att skapa och upprätthålla
-  goda kontakter med Chalmers, sektionen närstående personer och andra
-  sektioner och institutioner samt värna om sektionens traditioner.
-
-  \item Sektionen är fackligt, partipolitiskt och religiöst oberoende.
-
-\end{enumerate}
-
-
-
-\subsection{Verksamhetsår}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens verksamhetsår löper från 1 juli till 30 juni.
-
-\end{enumerate}
-
-
-\newpage
-
+    \subsection{Ändamål}
+        \pgf Fysikteknologsektionen, benämns nedan som sektionen, vid Chalmers studentkår är en ideell förening bestående av studerande vid utbildningsprogrammen Teknisk fysik eller Teknisk matematik vid Chalmers tekniska högskola och av studenter vid därtill associerade mastersprogram som betalat sektionsavgift till densamma.
+        
+        \pgf Sektionen har till uppgift att verka för sammanhållning mellan medlemmarna och tillvarata deras gemensamma intressen i utbildningsfrågor och studiesociala frågor.
+        
+        \pgf Sektionen har även till uppgift att skapa och upprätthålla goda kontakter med Chalmers, sektionen närstående personer och andra sektioner och institutioner samt värna om sektionens traditioner.
+        
+        \pgf Sektionen är fackligt, partipolitiskt och religiöst oberoende.
+    
+    \subsection{Verksamhetsår}
+        \pgf Sektionens verksamhetsår löper från 1 juli till 30 juni.
 
 
 \section{Medlemmar}
+    \subsection{Medlemmar}
+        \pgf Medlem i sektionen är kårmedlem som studerar vid utbildningsprogrammen för Teknisk fysik eller Teknisk matematik vid Chalmers tekniska högskola, som betalt sektionsavgift. Dessutom är kårmedlemmar som studerar vid programmen associerade mastersprogram, som betalt sektionsavgift, medlemmar. Därutöver kan sektionen ha hedersmedlemmar, seniormedlemmar, phatriarker/mathriarker, och särskild ledamot.
+           
+        \pgf Person sittandes på en post inom sektionen och vars medlemskap avslutas behöver sektionsstyrelsens godkännande för att preliminärt sitta kvar. Beslutet fastställs på det kommande sektionsmötet.
+
+    \subsection{Rättigheter}
+        \pgf Varje medlem har närvaro-, yttrande-, förslags- och rösträtt
+           på sektionsmöte.
+           
+        \pgf Varje medlem har motionsrätt till sektionsmöte
+        
+        \pgf Medlem är valbar till post inom sektionen.
+        
+        \pgf Medlem har rätt till medlemskap i sektionens intresseföreningar.
+        
+        \pgf Medlem har rätt att ta del av mötesprotokoll och sektionens övriga handlingar, undantaget de dokument som listas som icke offentliga i reglementet.
+        
+        \pgf Medlem har rätt att utnyttja av sektionen erbjudna tjänster.
+
+    \subsection{Skyldigheter}
+        \pgf Medlem är skyldig att rätta sig efter sektionens stadgar, reglemente, övriga beslut samt Fysikteknologsektionens övriga styrdokument.
+
+    \subsection{Definitioner}
+        \pgf Sektionens förtroendeposter avser poster listade i reglementet som förtroendeposter.
+          
+        \pgf Sektionsaktiv är person vald till post av sektionsmötet eller sektionsstyrelsen.
+
+    \subsection{Hedersmedlemmar}
+        \subsubsection{Grundkrav}
+            \pgf Till hedersmedlem kan kallas nu levande person som främjat F- eller TM-teknologer, sektionen, ämnesområdet fysik eller matematik eller på annat sätt tillförskansat sig F- eller TM-teknologens vördnad och respekt.
+
+        \subsubsection{Förslag och kallande}
+            \pgf Förslag till hedersmedlem lämnas skriftligt till sektionsstyrelsen med minst 25 namnunderskrifter från sektionsmedlemmar.
+            
+            \pgf Ärendet ska tas upp på nästa sektionsmöte. Beslut om kallande skall bifallas med minst 2/3 majoritet.
+            
+            \pgf Vid bifall kallas personen till nästa sektionsmöte där val förrättas.
+            
+            \pgf Personen skall närvara vid valet, eller ha inkommit med skriftligt bifall.
+            
+            \pgf Beslut om inval skall bifallas med minst 2/3 majoritet.
+
+        \subsubsection{Förteckning}
+            \pgf Sektionens hedersmedlemmar är listade i reglementet.
+
+        \subsubsection{Hedersmedlemmars rättigheter}
+            \pgf Hedersmedlem har närvaro- och yttranderätt på sektionsmöte.
+            
+            \pgf Hedersmedlem har närvaro- och intaganderätt på alla sektionens arrangemang.
+
+        \subsubsection{Hedersmedlemmars skyldigheter}
+            \pgf Hedersmedlem är skyldig att rätta sig efter sektionens stadgar, reglemente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
+
+    \subsection{Seniormedlemmar}
+        \subsubsection{Definition}
+            \pgf F- eller TM-teknolog har rätt att efter avslutade eller definitivt avbrutna studier skriftligen ansöka om seniormedlemskap av sektionsstyrelsen som därefter fastställer seniormedlemskap. Seniormedlem kvarstår som seniormedlem så länge en summa motsvarande sektionsavgiften skänks till sektionen.
+
+        \subsubsection{Seniormedlemmars rättigheter}
+            \pgf Seniormedlem har närvaro- och yttranderätt på sektionsmöte.
+
+            \pgf Seniormedlem har närvaro- och intaganderätt på alla sektionens arrangemang som är öppna för samtliga sektionens medlemmar.
+            
+            \pgf Seniormedlem har rätt att utnyttja av sektionen erbjudna tjänster.
+               
+            \pgf Seniormedlem är valbar till post inom sektionen.
+
+        \subsubsection{Seniormedlemmars skyldigheter}
+            \pgf Seniormedlem är skyldig att rätta sig efter sektionens stadgar, reglemente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
+
+    \subsection{Phatriarker/Mathriarker}
+        \subsubsection{Definition}
+            \pgf Med Phatriark/Mathriark avses den som som avlagt masters- eller civilingenjörsexamen som medlem av Fysikteknologsektionen vid Chalmers tekniska högskola.
+
+        \subsubsection{Phatriakers/Mathriarkers rättigheter}
+            \pgf Phatriark/Mathriark har närvaro- och yttranderätt på sektionsmöten.
+            
+            \pgf Phatriark/Mathriark må kvarstå på post inom sektionen.
+
+        \subsubsection{Phatriakers/Mathriarkers skyldigheter}
+            \pgf Phatriark/Mathriark är skyldig att rätta sig efter sektionens stadgar, reglemente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
+
+    \subsection{Särskild ledamot}
+        \subsubsection{Definition}
+            \pgf Särskild ledamot är kårmedlem vid Chalmers tekniska högskola som sektionsmöte med minst 2/3 majoritet beslutar, och som skänkt en summa motsvarande sektionsavgiften till sektionen.
+              
+            \pgf Kårmedlem vid Chalmers Tekniska Högskola har rätt att söka till särskild ledamot. Kårmedlem som önskar söka särskild ledamot skall meddela detta till sektionsstyrelsen och talmanspresidiet senast 6 läsdagar i förväg.
+
+        \subsubsection{Särskilda ledamöters rättigheter}
+            \pgf Särskild ledamot har närvaro- och yttranderätt på sektionsmöte.
+            
+            \pgf Särskild ledamot är valbar till post inom sektionen.
+            
+            \pgf Särskild ledamot har rätt att ta del av mötesprotokoll och sektionens övriga handlingar, undantaget de dokument som listas som icke offentliga i reglementet.
+            
+            \pgf Särskild ledamot har rätt att utnyttja av sektionen erbjudna tjänster.
+
+        \subsubsection{Särskilda ledamöters skyldigheter}
+            \pgf Särskild ledamot är skyldig att rätta sig efter sektionens stadgar, reglemente, övriga beslut samt Fysikteknologsektionens övriga styrdokument.
 
-
-
-\subsection{Medlemmar}
-\begin{enumerate}[\thesubsection.1]
-   
-  \item Medlem i sektionen är kårmedlem som studerar vid utbildningsprogrammen för Teknisk fysik eller Teknisk matematik vid Chalmers tekniska högskola, som betalt sektionsavgift. Dessutom är kårmedlemmar som studerar vid programmen associerade mastersprogram, som betalt sektionsavgift, medlemmar. Därutöver kan sektionen ha hedersmedlemmar, seniormedlemmar, phatriarker/mathriarker, och särskild ledamot.
-   
-  \item Person sittandes på en post inom sektionen och vars medlemskap avslutas behöver sektionsstyrelsens godkännande för att preliminärt sitta kvar. Beslutet fastställs på det kommande sektionsmötet.
-   
-\end{enumerate}
-
-
-
-\subsection{Rättigheter}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Varje medlem har närvaro-, yttrande-, förslags- och rösträtt
-   på sektionsmöte.
-   
-  \item Varje medlem har motionsrätt till sektionsmöte
-
-  \item Medlem är valbar till post inom sektionen.
-
-  \item Medlem har rätt till medlemskap i sektionens intresseföreningar.
-
-  \item Medlem har rätt att ta del av mötesprotokoll och sektionens övriga handlingar,
-   undantaget de dokument som listas som icke offentliga i reglementet.
-
-  \item Medlem har rätt att utnyttja av sektionen erbjudna tjänster.
-
-\end{enumerate}
-
-
-
-\subsection{Skyldigheter}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Medlem är skyldig att rätta sig efter sektionens stadgar,
-   regle\-mente, övriga beslut samt Fysikteknologsektionens övriga styrdokument.
-
-\end{enumerate}
-
-
-
-\subsection{Definitioner}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens förtroendeposter avser poster av sektionsmötet utsedda till förtroendeposter.
-
-  \item Sektionsaktiv är person vald till post av sektionsmötet eller sektionsstyrelsen.
-
-\end{enumerate}
-
-
-
-\subsection{Hedersmedlemmar}
-\subsubsection{Grundkrav}
-\begin{itemize}
-
-  \item Till hedersmedlem kan kallas nu levande person som främjat
-  F- eller TM-tekno\-loger, sektionen, ämnesområdet fysik eller matematik eller på annat sätt till\-för\-skansat
-  sig F- eller TM-tekno\-logens vördnad och respekt.
-
-\end{itemize}
-
-
-
-\subsubsection{Förslag och kallande}
-\begin{itemize}
-
-  \item Förslag till hedersmedlem lämnas skriftligt till sektionsstyrelsen med
-  minst 25 namnunderskrifter från sektionsmedlemmar.
-
-  \item Ärendet ska tas upp på nästa sektionsmöte. Beslut om kallande
-  skall bifallas med minst 2/3 majoritet.
-
-  \item Vid bifall kallas personen till nästa sektionsmöte där val
-  förrättas.
-
-  \item Personen skall närvara vid valet, eller ha inkommit med
-  skriftligt bifall.
-
-  \item Beslut om inval skall bifallas med minst 2/3 majoritet.
-
-\end{itemize}
-
-
-
-\subsubsection{Förteckning}
-\begin{itemize}
-
-  \item Sektionens hedersmedlemmar är listade i reglementet.
-
-\end{itemize}
-
-
-
-\subsubsection{Hedersmedlemmars rättigheter}
-\begin{itemize}
-
-  \item Hedersmedlem har närvaro- och yttranderätt på sektionsmöte.
-
-  \item Hedersmedlem har närvaro- och intaganderätt på alla sektionens
-arrangemang.
-
-\end{itemize}
-
-
-
-\subsubsection{Hedersmedlemmars skyldigheter}
-\begin{itemize}
-
-  \item Hedersmedlem är skyldig att rätta sig efter sektionens stadgar,
-  regle\-mente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
-
-\end{itemize}
-
-
-
-\subsection{Seniormedlemmar}
-\subsubsection{Definition}
-\begin{itemize}
-
-  \item F- eller TM-teknolog har rätt att efter avslutade eller definitivt
-  avbrutna studier skriftligen ansöka om seniormedlemskap av sektionsstyrelsen
-  som därefter fastställer seniormedlemskap. Seniormedlem kvarstår som
-  senior\-med\-lem så länge en summa motsvarande sektionsavgiften skänks till sektionen.
-
-\end{itemize}
-
-
-
-\subsubsection{Seniormedlemmars rättigheter}
-\begin{itemize}
-
-  \item Seniormedlem har närvaro- och yttranderätt på sektionsmöte.
-
-  \item Seniormedlem har närvaro- och intaganderätt på alla
-   sektionens arrangemang som är öppna för samtliga sektionens
-   medlemmar.
-
-  \item Seniormedlem har rätt att utnyttja av sektionen erbjudna
-   tjänster.
-   
-  \item Seniormedlem är valbar till post inom sektionen.
-
-\end{itemize}
-
-
-
-\subsubsection{Seniormedlemmars skyldigheter}
-\begin{itemize}
-
-  \item Seniormedlem är skyldig att rätta sig efter sektionens stadgar,
-  regle\-mente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
-
-\end{itemize}
-
-
-
-\subsection{Phatriarker/Mathriarker}
-\subsubsection{Definition}
-\begin{itemize}
-
-  \item Med Phatriark/Mathriark avses den som som avlagt masters-
-  eller civil\-ingenjörs\-examen som medlem av Fysik\-teknolog\-sektionen vid\\
-  Ch\-al\-mers tekniska högskola.
- 
-\end{itemize}
-
-
-
-\subsubsection{Phatriakers/Mathriarkers rättigheter}
-\begin{itemize}
-
-  \item Phatriark/Mathriark har närvaro- och yttranderätt på sektionsmöten.
-
-  \item Phatriark/Mathriark må kvarstå på post inom sektionen.
-
-\end{itemize}
-
-
-
-\subsubsection{Phatriakers/Mathriarkers skyldigheter}
-
-\begin{itemize}
-
-  \item Phatriark/Mathriark är skyldig att rätta sig efter sektionens stadgar,
-  regle\-mente, övriga beslut samt  Fysikteknologsektionens övriga styrdokument.
-
-\end{itemize}
-
-
-
-\subsection{Särskild ledamot}
-
-\subsubsection{Definition}
-
-\begin{itemize}
-
-  \item Särskild ledamot är kårmedlem vid Chalmers tekniska högskola
-  som sektionsmöte med minst 2/3 majoritet beslutar, och som skänkt en summa motsvarande sektionsavgiften till sektionen.
-  
-  \item Kårmedlem vid Chalmers Tekniska Högskola har rätt att söka till särskild ledamot. Kårmedlem som önskar söka särskild ledamot skall meddela detta till sektionsstyrelsen och talmanspresidiet senast 6 läsdagar i förväg.
-
-\end{itemize}
-
-\subsubsection{Särskilda ledamöters rättigheter}
-
-\begin{itemize}
-
-  \item Särskild ledamot har närvaro- och yttranderätt på
-   sektionsmöte.
-
-  \item Särskild ledamot är valbar till post inom sektionen.
-
-   \item Särskild ledamot har rätt att ta del av mötesprotokoll och
-   sektionens övriga handlingar, undantaget de dokument som listas som icke offentliga i reglementet.
-
-  \item Särskild ledamot har rätt att utnyttja av sektionen erbjudna
-   tjänster.
-
-\end{itemize}
-
-\subsubsection{Särskilda ledamöters skyldigheter}
-
-\begin{itemize}
-
-\item Särskild ledamot är skyldig att rätta sig efter sektionens stadgar,
-   regle\-mente, övriga beslut samt Fysikteknologsektionens övriga styrdokument.
-
-
-\end{itemize}
-
-\newpage
 
 \section{Inspektor}
-\begin{itemize}
-
-	\item Sektionens inspektor skall vara fysik- eller matematikprofessor vid institutionen för fysik eller institutionen för matematiska vetenskaper och tillvarata F- och TM-teknologens intressen, samt fungera som en länk mellan teknologer och anställda.
-	
-	\item Sektionens inspektor väljs på två på varandra följande sektionsmöten med minst 2/3 majoritet, för mandat på tre år. 
-	
-	\item Förslag till inspektor inlämnas till sektionsstyrelsen med minst 25 namnunderskrifter från sektionsmedlemmar eller lyfts av sektionsstyrelsen med enkel majoritet. Innan val skall sektionsstyrelsen tillfråga den nominerade om denne är att betrakta som valbar.
-	
-	\item Inspektors mandat kan förlängas med tre år åt gången av sektionsmötet, om detta sker med enkel majoritet. Om mandatet ej förlängs skall nyval av inspektor ske på nästkommande sektionsmöte. Inspektors mandat förlängs då tills dess att ny inspektor blivit vald.
-
-
-%Kopierat från kåren
-\item Inspektor har närvaro-, yttrande- och förslagsrätt vid sammanträde i sektionens samtliga organ.
-
-\end{itemize}
-
+    \pgf Sektionens inspektor skall vara fysik- eller matematikprofessor vid institutionen för fysik eller institutionen för matematiska vetenskaper och tillvarata F- och TM-teknologens intressen, samt fungera som en länk mellan teknologer och anställda.
+    
+    \pgf Sektionens inspektor väljs på två på varandra följande sektionsmöten med minst 2/3 majoritet, för mandat på tre år. 
+    
+    \pgf Förslag till inspektor inlämnas till sektionsstyrelsen med minst 25 namnunderskrifter från sektionsmedlemmar eller lyfts av sektionsstyrelsen med enkel majoritet. Innan val skall sektionsstyrelsen tillfråga den nominerade om denne är att betrakta som valbar.
+    
+    \pgf Inspektors mandat kan förlängas med tre år åt gången av sektionsmötet, om detta sker med enkel majoritet. Om mandatet ej förlängs skall nyval av inspektor ske på nästkommande sektionsmöte. Inspektors mandat förlängs då tills dess att ny inspektor blivit vald.
+    
+    %Kopierat från kåren
+    \pgf Inspektor har närvaro-, yttrande- och förslagsrätt vid sammanträde i sektionens samtliga organ.
 
 
 \section{Organisation och ansvar}
+    \subsection{Verksamhetsutövande}
+        \pgf Sektionens verksamhet utövas på det sätt denna stadga med tillhörande reglemente föreskriver genom
+            \begin{enumerate}[label=\arabic*., labelsep=.6em]
+                \item Sektionsmötet
+                \item Studerandearbetsmiljöombud
+                \item Sektionens valberedning
+                \item Sektionens revisorer
+                \item Talmanspresidiet
+                \item Sektionsstyrelsen
+                \item Sektionsordföranden
+                \item Studienämnden
+                \item Sektionskommitéer
+                \item Sektionsföreningar
+                \item Sektionsfunktionärer
+                \item Intresseföreningar.
+            \end{enumerate}
+        
+        \pgf Uppgifter får delegeras enligt följande hierarki:
+            \begin{itemize}
+                \item Sektionsmötet har rätt att delegera både ansvar och uppgifter till valberedning, revisor, talmanspresidium, sektionsstyrelse, nämnder, sektionskommittéer, sektionsföreningar och sektionsfunktionärer.
+                
+                \item Sektionsstyrelsen har rätt att delegera uppgifter till nämnder,  sektionskommittéer, sektionsföreningar och sektionsfunktionärer, förutsatt att uppgiften ligger under deras verksamhetsområde.
+            \end{itemize}
+    
+    \subsection{Ansvarsförhållanden}
+        \pgf Sektionsmötet är sektionens högsta beslutande organ.
+        
+        \pgf Dragos är sektionens högste beskyddare och utövar fanfareriets högsta befäl.
+        
+        \pgf Sektionsmötet har till sitt förfogande valberedning, revisorer, talmanspresidiet, sektionsstyrelsen och sektionsordförande.
+        
+        \pgf Övrig verksamhet lyder under sektionsstyrelsen, enligt stadgans kapitel~\ref{sec:sektionsstyrelsen}.
+    
+    \subsection{Misstroendevotum}\label{subsec:misstroende}
+    
+        \pgf Misstroendevotum kan kallas av någon av följande: % ÄNDRAT
+        	\begin{itemize}
+        		\item Enskild styrelseledamot
+        		\item 25 medlemmar
+        		\item Endera av sektionens revisorer.
+        	\end{itemize}
+        	
+        \pgf Misstroendevotum får endast behandlas av instans högre än målet, enligt punkt~\ref{pgf:rang}.
+        
+        \pgf Misstroendevotum ska tas upp för behandling inom 15 läsdagar.
+        
+        \pgf Målet för misstroendevotum har rätt att närvarva vid och delta i diskussionen rörande beslutet.
+        
+        \pgf Misstroendevotum resulterar i avsättande vid 2/3 majoritet i frågan. Omröstning ska ske slutet. \label{pgf:misstroende}
+        
+        \pgf Om sektionsstyrelsen avsätts genom misstroendevotum skall interimstyrelse och ny valberedning väljas. Talmanspresidiet utfärdar kallelse till extra sektionsmöte där ny ordinarie styrelse skall väljas. Detta sektionsmöte skall hållas inom 15 läsdagar. Interimstyrelsen övertar ordinarie styrelses befogenheter och skyldigheter tills ny ordinarie styrelse är vald, men får endast handha löpande ärenden. Inom fyra veckor från valet av den nya styrelsen skall ett bokslut för perioden fram till och med datumet för detta val upprättas. Sektionsmötet beslutar i samband med avsättandet om detta bokslut skall upprättas av avgående styrelse eller den nya styrelsen. Den nya styrelsen skall ej hållas ansvarig för brister i denna ekonomiska redovisning.
+        
+        \pgf Om sektionsordförande avsätts genom misstroendevotum tar vice sektionsordförande över rollen vid avsättande fram tills ny sektionsordförande är vald.
+        
+        \pgf Om ekonomiskt ansvarig avsätts genom misstroendevotum skall fyllnadsval ske inom 15 läsdagar efter avsättandet. Inom fyra veckor från fyllnadsvalet skall ett bokslut för perioden fram till och med datumet för detta val upprättas. Sektionsmötet beslutar i samband med avsättande av kassören om detta bokslut skall upprättas av den avgående eller den nya kassören. Den nya kassören skall ej hållas  ansvarig för brister i denna ekonomiska redovisning. 
+        
+        \pgf Instanser inom sektionen rangordnas enligt följande, med avseende på misstroendevotum: \label{pgf:rang}
+        	\begin{itemize}
+        		\item Sektionsmötet är högsta instans.
+        		
+        		\item Sektionsstyrelsen, förtroendevalda i kommittéer, sektionsföreningar och nämnder, valberedningen, studerandearbetsmiljöombud, talmanspresidiet samt revisorer och förtroendevalda funktionärer lyder direkt under sektionsmötet.
+        		
+        		\item Ledamöter i kommittéer, sektionsföreningar, nämnder och funktionärer som ej nämns ovan lyder under sektionsstyrelsen.
+        	\end{itemize}
+        	
+        \pgf Ifall misstroendevotum av talmanspresidiet, eller enskild medlem av talmanspresidiet, lyfts tillses kallelse av sektionsmötet av sektionsordförande. Sektionsmötet väljer ett temporärt talmanspresidium till sektionsmötet.
 
-\subsection{Verksamhetsutövande}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens verksamhet ut\-övas på det sätt denna stadga med
-   till\-hör\-ande regle\-mente föreskriver genom:
-      \begin{enumerate}[1]
-       \item Sektionsmötet
-       \item Studerandearbetsmiljöombud
-       \item Sektionens valberedning
-       \item Sektionens revisorer
-       \item Talmanspresidiet
-       \item Sektionsstyrelsen
-	 	 \item Sektionsordföranden
-       \item Studienämnden
-       \item Sektionskommitéer
-       \item Sektionsföreningar
-       \item Sektionsfunktionärer
-       \item Intresseföreningar
-      \end{enumerate}
-
-	\item Uppgifter och ansvar får delegeras enligt följande hierarki:
-		\begin{enumerate}
-			\item[-] Sektionsmötet har rätt att delegera både ansvar och uppgifter till valberedning, revisor, talmanspresidie, sektionsstyrelse, nämnder, sektionskommittéer, sektionsföreningar och sektionsfunktionärer.
-			\item[-] Sektionsstyrelsen har rätt att delegera uppgifter till nämnder,  sektionskommittéer, sektionsföreningar och sektionsfunktionärer, dock ej studerandearbetsmiljöombud, förutsatt att uppgiften ligger under deras verksamhetsområde.
-		\end{enumerate}
-
-\end{enumerate}
-
-\subsection{Ansvarsförhållanden}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötet är sektionens högsta beslutande organ.
-
-  \item Dragos är sektionens högste beskyddare och utövar
-   fanfareriets högsta befäl.
-
-  \item Sektionsmötet har till sitt förfogande valberedning,
-   revisorer, talmanspresidiet, sektionsstyrelsen och sektionsordförande.
-
-  \item Övrig verksamhet lyder under sektionsstyrelsen, enligt stadgans kapitel~\ref{sektionsstyrelsen}.
-
-\end{enumerate}
-
-\subsection{Misstroendevotum}\label{subsec:misstroende}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Misstroendevotum kan kallas av
-		\begin{itemize}
-			\item[-] enskild styrelseledamot, 
-			\item[-] 25 medlemmar, eller
-			\item[-] endera av sektionens revisorer
-		\end{itemize}
-	
-	\item Misstroendevotum får endast behandlas av instans högre än målet, enligt punkt 4.3.9. %3.3.9.
-	
-
-	\item Misstroendevotum ska tas upp för behandling inom 15 läsdagar.
-
-	\item Målet för misstroendevotum har rätt att närvarva vid och delta i diskussionen rörande beslutet.
-
-	\item Misstroendevotum resulterar i avsättande vid 2/3 majoritet i frågan. Omröstning ska ske slutet. 
-
-	\item Om sektionsstyrelsen avsätts genom misstroendevotum skall interimstyrelse och ny valberedning väljas. Talmanspresidiet utfärdar kallelse till extra sektionsmöte där ny ordinarie styrelse skall väljas. Detta sektionsmöte skall hållas inom 15 läsdagar. Interimstyrelsen övertar ordinarie styrelses befogenheter och skyldigheter tills ny ordinarie styrelse är vald, men får endast handha löpande ärenden. Inom fyra veckor från valet av den nya styrelsen skall ett bokslut för perioden fram till och med datumet för detta val upprättas. Sektionsmötet beslutar i samband med avsättandet om detta bokslut skall upprättas av avgående styrelse eller den nya styrelsen. Den nya styrelsen skall ej hållas ansvarig för brister i denna ekonomiska redovisning.
-
-	\item Om sektionsordförande avsätts genom misstroendevotum tar vice sektionsordförande över rollen vid avsättande fram tills ny sektionsordförande är vald.
-
-	\item Om ekonomiskt ansvarig avsätts genom misstroendevotum skall fyllnadsval ske inom 15 läsdagar efter avsättandet. Inom fyra veckor från fyllnadsvalet skall ett bokslut för perioden fram till och med datumet för detta val upprättas. Sektionsmötet beslutar i samband med avsättande av kassören om detta bokslut skall upprättas av den avgående eller den nya kassören. Den nya kassören skall ej hållas  ansvarig för brister i denna ekonomiska redovisning. 
-
-	\item\label{rangordning} Instanser inom sektionen rangordnas enligt följande, med avseende på misstroendevotum:
-
-		\begin{itemize}
-			\item[-] Sektionsmötet är högsta instans
-			\item[-] Sektionsstyrelsen, förtroendevalda i kommittéer, sektionsföreningar och nämnder, valberedningen, studerandearbetsmiljöombud, talmanspresidiet samt revisorer och förtroendevalda funktionärer lyder direkt under sektionsmötet
-			\item[-] Ledamöter i kommittéer, sektionsföreningar och nämnder och funktionärer som ej nämns ovan lyder under sektionsstyrelsen
-		\end{itemize}
-	
-	\item Ifall misstroendevotum av talmanspresidiet, eller enskild medlem av talmanspresidiet, lyfts tillses kallelse av sektionsmötet av sektionsordförande. Sektionsmötet väljer ett temporärt talmanspresidie till sektionsmötet.
-	
-\end{enumerate}
-
-\newpage
 
 \section{Sektionsmötet}
-
-\subsection{Befogenheter}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötet är sektionens högsta beslutande organ i vilket
-  samtliga medlemmar äger rätt att delta och har rösträtt.
-
-\end{enumerate}
-
-\subsection{Sammanträden}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötet skall sammanträda minst en gång per läsperiod.
-
-  \item Sektionsmötet sammanträder på kallelse av talmannen. Vid vakant talman åläggs sektionsordförande att tillse att det kallas till sektionsmöte.
-
-\end{enumerate}
-
-\subsection{Utlysande}
-\begin{enumerate}[\thesubsection.1]\label{subsec:utlysande}
-
-  \item Rätt att hos talmannen begära utlysande av
-  sek\-tions\-möte tillkommer styrelseledamot, inspektor,  Chalmers Studentkårs styrelse, sek\-ti\-ons\-revisor  eller minst 25 medlemmar. Sådant möte skall hållas inom femton läsdagar.
-
-  \item Ordinarie sektionsmöte skall utlysas minst 10 läsdagar i
-  förväg genom att preliminär föredragningslista och kallelse an\-slås enligt
-  reglemente. 
-  
-  \item Slutlig föredragningslista, enligt reglemente, anslås minst 3 läsdagar före ordinarie möte. 
-  
-  \item Inkomna motioner och propositioner skall anslås
-  minst 3 läsdagar i förväg.
-  
-  \item Extra sektionsmöte skall utlysas minst 5 läsdagar före mötet
-  och åt\-följ\-as av slutlig föredragningslista.
-
-\end{enumerate}
-
-\subsection{Åligganden}
-\begin{enumerate}[\thesubsection.1]
-  \item Det åligger sektionsmötet att innan utgången av varje läsperiod:
-    \begin{itemize}
-        \item Behandla verksamhets- och revisionsberättelse samt ansvarsfrihet för eventuella sektionsstyrelse, studienämnd, kommittéer och sektionsföreningar som gått av efter föregående ordinarie sektionsmöte. 
-    \end{itemize}
-
-  \item Det åligger sektionsmötet att innan utgången av läsperiod 1:
-    \begin{itemize}
-    \item Fastställa budget för sektionen.
-    \item Godkänna/underkänna de ledarmöter till sektionen tillhörande programråd som sektionsstyrelsen föreslagit.
-    \item Fastställa verksamhetsplan för sektionsstyrelsen innevarande läsår.
-    \item Välja sektionsaktiva enligt reglementet. 
-    \item Var tredje år besluta om förlängt mandat för inspektor
-    \end{itemize}
-
-  \item Det åligger sektionsmötet att innan utgången av läsperiod 2:
-    \begin{itemize}
-    \item Välja sektionsaktiva enligt reglementet.
-    \end{itemize}
-
-  \item Det åligger sektionsmötet att innan utgången av läsperiod 3:
-    \begin{itemize}
-    \item Välja sektionsaktiva enligt reglementet.
-    \end{itemize}
-
-  \item Det åligger sektionsmötet att innan utgången av läsperiod 4:
-    \begin{itemize}
-    \item Välja sektionsordförande
-    \item Välja sektionskassör
-    \item Välja övriga ledamöter av sektionsstyrelsen  enligt reglementet
-    \item Välja talman
-    \item Välja sektionsaktiva enligt reglementet
-    \end{itemize}
-
-\end{enumerate}
-
-\subsection{Beslutsförighet}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötet är beslutsmässigt om mötet är behörigt utlyst
-  enligt stadgans paragraf~\ref{subsec:utlysande}, samt om fler än 15 röstberättigade medlemmar, exklusive sektionsstyrelsen och presidiet, är närvarande.
-
-  \item Om färre än 25 medlemmar, exklusive sektionsstyrelsen och presidiet, är närvarande då beslut skall fattas, kan detta ske om ingen yrkar på bordläggning.
-  
-
-\end{enumerate}
-
-\subsection{Närvaro-, yttrande-, förslags- och rösträtt}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Närvaro-, yttrande-, förslags- och rösträtt tillkommer sektionsmedlem.
-  
-  \item Närvaro- yttrande- och förslagsrätt tillkommer inspektor, sektionsrevisor samt av talmanspreseidiet.
-  
-  \item Närvaro- och yttranderätt tillkommer
-  heders\-med\-lem, seniormedlem, phatriark/mathriark, särskild ledamot, kårledningen, kårens inspektor, samt av mötet adjungerade icke-medlemmar.
-
-  \item Rösträtt kan endast tillkomma sektionsmedlemmar.
-
-\end{enumerate}
-
-\subsection{Motion}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Motionsrätt tillkommer endast sektionsmedlem.
-
-  \item Medlem som önskar ta upp frågor på föredragningslistan skall
-  anmäla detta till sektionsstyrelsen och talmanspresidiet senast 6 läsdagar i förväg. Sektionsstyrelsen skall ges möjlighet att yttra sig kring dessa.
-    
-\end{enumerate}
-
-\subsection{Extra ärenden}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Vid sektionsmöte får ärende som inte angivits på slutgiltig
-  före\-drag\-nings\-lista endast tas upp om sektionsmötet med minst 2/3 majoritet så beslutar.
-
-\end{enumerate}
-
-\subsection{Talmanspresidie}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Talmannen väljs av sektionsmötet. Talmannen får ej vara medlem av sektionsstyrelsen.
-
-  \item Talmannen ska leda sektionsmötet i överensstämmelse med
-  st\-ad\-gan, reglementet samt av sektionsmötet fastslagen mötesordning.
-
-\item Talmannen behöver ej vara medlem av sektionen.
-
-\item Talmanspresidiet består av talman och övriga ledamöter i enlighet med reglementet.
-
-\end{enumerate}
-
-\subsection{Överklagande}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Beslut av sektionsmötet som strider mot kårens eller
-  sektionens stad\-ga, reglemente och/eller policy får undanröjas av
-  kårens fullmäktige. Så\-dant beslut skall tas upp till prövning om det begärs av en kår\-med\-lem då det rör kårens stadga, eller
-  sektionsmedlem då det rör sektion\-ens stadga.
-
-\end{enumerate}
-
-\subsection{Omröstning}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Röstning med fullmakt får ej ske.
-
-  \item Omröstning skall ske öppet, utom vid personval då stadgans
-  paragraf~\ref{subsec:personval} gäller, och vid misstroendevotum då stadgans paragraf~\ref{subsec:misstroende}.5 gäller.
-
-  \item Vid lika röstetal i sakfråga avgörs frågan av talmannen.
-
-\end{enumerate}
-
-\subsection{Personval}\label{subsec:personval}
-
-\begin{enumerate}[\thesubsection.1]
-  
-  \item I det fall då det finns fler sökande än antalet platser skall personval ske med sluten omröstning. I annat fall skall personval ske öppet om annat ej begärs av röstberättigad sektionsmötesdeltagare.
-  
-  \item Vid lika röstetal vid personval företas en ny omröstning mellan de kandidater som fått lika röstetal. Vid lika röstetal i den andra omröstningen skiljer lotten.
-  
-  \item En person kan endast väljas om denne är närvarande eller har gett talmannen sitt skriftliga bifall till att bli vald.
-
-\end{enumerate}
-
-\subsection{Fyllnadsval}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Vid vakantsatt post har sektions\-styr\-elsen rätt att preliminärt tillsätta posten. Fastställande sker på näst\-komm\-ande sektionsmöte.
-
-\end{enumerate}
-
-\subsection{Mötesprotokoll}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötesprotokoll skall justeras av två av mötet utvalda
-  justeringspersoner. Justerat protokoll skall anslås senast tre
-  läsveckor efter mötet.
-
-\end{enumerate}
-
-
-\subsection{Förteckning}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsmötesbeslut som ej förtecknas i stadga, reglemente eller bland Fysikteknologsektionens övriga styrdokument, skall sammanställas i särskillt dokument tillgängligt för sektionens medlemmar.
-
-\item Fysikteknologsektionens övriga styrdokument ska listas i reglementet.
-\end{enumerate}
-
-\newpage
-
+    \subsection{Befogenheter}
+        \pgf Sektionsmötet är sektionens högsta beslutande organ i vilket samtliga medlemmar äger rätt att delta och har rösträtt.
+
+    \subsection{Sammanträden}
+        \pgf Sektionsmötet skall sammanträda minst en gång per läsperiod.
+
+        \pgf Sektionsmötet sammanträder på kallelse av talmannen. Vid vakant talman åläggs sektionsordförande att tillse att det kallas till sektionsmöte.
+
+    \subsection{Utlysande} \label{subsec:utlysande}
+        \pgf Rätt att hos talmannen begära utlysande av sektionsmöte tillkommer styrelseledamot, inspektor,  Chalmers Studentkårs styrelse, sektionsrevisor  eller minst 25 medlemmar. Sådant möte skall hållas inom femton läsdagar.
+        
+        \pgf Ordinarie sektionsmöte skall utlysas minst 10 läsdagar i förväg genom att preliminär föredragningslista och kallelse anslås enligt reglemente. 
+          
+        \pgf Slutlig föredragningslista, enligt reglemente, anslås minst 3 läsdagar före ordinarie möte. 
+          
+        \pgf Inkomna motioner och propositioner skall anslås minst 3 läsdagar i förväg.
+          
+        \pgf Extra sektionsmöte skall utlysas minst 5 läsdagar före mötet och åtföljas av slutlig föredragningslista.
+
+    \subsection{Åligganden}
+        \pgf Det åligger sektionsmötet att innan utgången av varje läsperiod
+            \begin{itemize}
+                \item behandla verksamhets- och revisionsberättelse samt ansvarsfrihet för eventuella sektionsstyrelse, studienämnd, kommittéer och sektionsföreningar som gått av efter föregående ordinarie sektionsmöte. 
+            \end{itemize}
+        
+        \pgf Det åligger sektionsmötet att innan utgången av läsperiod 1
+            \begin{itemize}
+                \item fastställa budget för sektionen
+            
+                \item fastslå/avslå de ledamöter till sektionen tillhörande programråd som sektionsstyrelsen preliminärt har valt
+            
+                \item fastställa verksamhetsplan för sektionsstyrelsen innevarande läsår
+            
+                \item välja sektionsaktiva enligt reglementet
+            
+                \item var tredje år besluta om förlängt mandat för inspektor.
+            \end{itemize}
+        
+        \pgf Det åligger sektionsmötet att innan utgången av läsperiod 2
+            \begin{itemize}
+                \item välja sektionsaktiva enligt reglementet.
+            \end{itemize}
+        
+        \pgf Det åligger sektionsmötet att innan utgången av läsperiod 3
+            \begin{itemize}
+                \item välja sektionsaktiva enligt reglementet.
+            \end{itemize}
+        
+        \pgf Det åligger sektionsmötet att innan utgången av läsperiod 4
+            \begin{itemize}
+                \item välja sektionsordförande
+                
+                \item välja sektionskassör
+                
+                \item välja övriga ledamöter av sektionsstyrelsen enligt reglementet
+                
+                \item välja talman
+                
+                \item välja sektionsaktiva enligt reglementet.
+            \end{itemize}
+
+    \subsection{Beslutsförighet} % ÄNDRAT: paragraf -> avsnitt
+        \pgf Sektionsmötet är beslutsmässigt om mötet är behörigt utlyst enligt stadgans avsnitt~\ref{subsec:utlysande}, samt om fler än 15 röstberättigade medlemmar, exklusive sektionsstyrelsen och presidiet, är närvarande.
+        
+        \pgf Om färre än 25 medlemmar, exklusive sektionsstyrelsen och presidiet, är närvarande då beslut skall fattas, kan detta ske om ingen yrkar på bordläggning.
+
+    \subsection{Närvaro-, yttrande-, förslags- och rösträtt}
+        \pgf Närvaro-, yttrande-, förslags- och rösträtt tillkommer sektionsmedlem.
+          
+        \pgf Närvaro- yttrande- och förslagsrätt tillkommer inspektor, sektionsrevisor samt talmanspresidiet.
+          
+        \pgf Närvaro- och yttranderätt tillkommer hedersmedlem, seniormedlem, phatriark, mathriark, särskild ledamot, kårledningen, kårens inspektor, samt av mötet adjungerade icke-medlemmar.
+        
+        \pgf Rösträtt kan endast tillkomma sektionsmedlemmar.
+
+    \subsection{Motioner}
+        \pgf Motionsrätt tillkommer endast sektionsmedlem.
+        
+        \pgf Medlem som önskar ta upp frågor på föredragningslistan skall anmäla detta till sektionsstyrelsen och talmanspresidiet senast 6 läsdagar i förväg. Sektionsstyrelsen skall ges möjlighet att yttra sig kring dessa.
+
+    \subsection{Extra ärenden}
+        \pgf Vid sektionsmöte får ärende som inte angivits på slutgiltig föredragningslista endast tas upp om sektionsmötet med minst 2/3 majoritet så beslutar.
+
+    \subsection{Talmanspresidiet}
+        \pgf Talmannen väljs av sektionsmötet. Talmannen får ej vara medlem av sektionsstyrelsen.
+        
+        \pgf Talmannen ska leda sektionsmötet i överensstämmelse med
+        stadgan, reglementet samt av sektionsmötet fastslagen mötesordning.
+        
+        \pgf Talmannen behöver ej vara medlem av sektionen.
+        
+        \pgf Talmanspresidiet består av talman och övriga ledamöter i enlighet med reglementet.
+
+    \subsection{Överklagande}
+        \pgf Beslut av sektionsmötet som strider mot kårens eller sektionens stadga, reglemente och/eller policy får undanröjas av kårens fullmäktige. Sådant beslut skall tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller sektionsmedlem då det rör sektionens stadga.
+
+    \subsection{Omröstning}
+        \pgf Röstning med fullmakt får ej ske.
+        
+        % ÄNDRAT: paragraf -> avsnitt
+        \pgf Omröstning skall ske öppet, utom vid personval då stadgans avsnitt~\ref{subsec:personval} gäller, och vid misstroendevotum då stadgans paragraf~\ref{pgf:misstroende} gäller.
+        
+        \pgf Vid lika röstetal i sakfråga avgörs frågan av talmannen.
+
+    \subsection{Personval}\label{subsec:personval}
+        \pgf I det fall då det finns fler sökande än antalet platser skall personval ske med sluten omröstning. I annat fall skall personval ske öppet om annat ej begärs av röstberättigad sektionsmötesdeltagare.
+          
+        \pgf Vid lika röstetal vid personval företas en ny omröstning mellan de kandidater som fått lika röstetal. Vid lika röstetal i den andra omröstningen skiljer lotten.
+          
+        \pgf En person kan endast väljas om denne är närvarande eller har gett talmannen sitt skriftliga bifall till att bli vald.
+
+    \subsection{Fyllnadsval}
+        \pgf Vid vakantsatt post har sektionsstyrelsen rätt att preliminärt tillsätta posten. Fastställande sker på nästkommande sektionsmöte.
+
+    \subsection{Mötesprotokoll}
+        \pgf Sektionsmötesprotokoll skall justeras av två av mötet utvalda justeringspersoner. Justerat protokoll skall anslås senast tre läsveckor efter mötet.
+
+    \subsection{Förteckning}
+        \pgf Sektionsmötesbeslut som ej förtecknas i stadga, reglemente eller bland Fysikteknologsektionens övriga styrdokument, skall sammanställas i särskilt dokument tillgängligt för sektionens medlemmar.
+        
+        \pgf Fysikteknologsektionens övriga styrdokument ska listas i reglementet.
 
 
 \section{Valberedningen}
-
-\subsection{Valberedning}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens valberedning skall väljas av sektionsmötet. Valberedningen skall agera oberoende.
-  
-  \item Ledamot av valberedningen skall ej vara jävig gentemot de de valbereder.
-
-\end{enumerate}
-
-\subsection{Sammansättning}
-
-\begin{enumerate}[\thesubsection.1]
-
-
-  
-  \item Valberedningen består av 3–7 ledamöter varav två väljs internt till ordförande respektive vice ordförande.
-  
-  \item Ledamöter i valberedningen får ej vara medlem i någon kommitté eller nämnd som har representant i sektionsstyrelsen samt heller inte själv vara medlem av sektionsstyrelsen.
-
-\item I det fall då valberedningen ej är fulltalig och sektionsstyrelsen så anser lämpligt, har sektionsstyrelsen möjlighet att temporärt välja kvarstående valberedningsposter inför varje valberedningsprocess. Dessa temporära medlemmar får inneha post i sektionsstyrelsen.
-\end{enumerate}
-
-\subsection{Beslutsförighet}
-
-\begin{enumerate}[\thesubsection.1]
-
-\item Vid valberedningens första sammanträde skall ordförande och vice ordförande väljas. Minst 3 av valberedningens ledamöter måste då vara närvarande.
-
-  \item När valberedningen sammanträder har max två medlemmar ur berörd kommitté/\-styrelse/nämnd/sektionsförening/funktionär närvaro-, för\-slags-, yttrande- och rösträtt. Valberedningens  ord\-för\-ande är ordförande samt sammankallande för valberedningen.
-
-  \item Valberedningen är beslutsförig om dess ordförande, eller vice ordförande, minst två ytterligare ledamöter samt minst en representant för berörd styrelse/\-kommité/\-nämnd/\-funktionär är närvarande.
-
-\end{enumerate}
-
-\subsection{Ansvar}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Valberedningen ansvarar för nomineringar till samtliga poster
-  i sektionsstyrelsen. Därutöver ansvarar valberedningen för
-  nomineringar till förtroendeposter och övriga poster på sektionen, enligt
-  reglementet.
-
-\end{enumerate}
-
-\subsection{Anslag}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Valberedningens nomineringar skall anslås i enlighet med reglementet.
-
-\end{enumerate}
-
-
-\newpage
-
-
-
-
-
-\section{Sektionsstyrelsen}\label{sektionsstyrelsen}
-\subsection{Befogenheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsstyrelsen handhar i överens\-stäm\-melse med denna stadga, befintligt reglemente samt beslut tagna av sektionsmötet den verk\-ställ\-ande ledningen av sektionens verksamhet. Sektionsstyrelsen är sektions\-mötets ställ\-före\-trädare.
-
-\end{enumerate}
-
-\subsection{Sammansättning}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsstyrelsen består av sektionsordförande, vice sektionsordförande, sektionskassör samt övriga ledamöter enligt reglemente.
-%kärnstyret är ej omnämnt någon annanstans i stadgan så det känns onödigt att introducera det här. Det är även värt att tillåta fler än en extra ledamot i kärnstyret och då låta det regleras i reglemente. Sekreteraren regleras inte någon annan stans i stadgan heller så eventuellt kan man utelämna den posten här också
-\end{enumerate}
-
-\subsection{Ansvar}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsstyrelsen ansvarar inför sektionsmötet för sektionens verksamhet och sektionens ekonomi.
-
-\end{enumerate}
-
-\subsection{Firmatecknande}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsordförande samt sektionskassör tecknar sektionens
-  firma var för sig.
-
-\end{enumerate}
-
-\subsection{Sammanträden}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item  Sektionsstyrelsen sammanträder minst tre gånger per läsperiod.
-
-  \item Sektionsstyrelsen sammanträder på kallelse av sektionsordförande.
-
-\end{enumerate}
-
-\subsection{Beslutsförighet}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item  Sektionsstyrelsen är beslutsmässigt om sektionsordförande eller vice sektionsordförande och sammanlagt mer än hälften av sektionsstyrelsens ledamöter är närvarande.
-
-\end{enumerate}
-
-\subsection{Överklagande}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Beslut av sektionsstyrelsen som strider mot kårens eller sektionens stadga, reglemente och/eller policy får undanröjas av kårfullmäktige. Sådant beslut skall tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller sektionsmedlem då det rör sektionens stadga.
-
-\end{enumerate}
-
-\subsection{Protokoll}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Protokoll skall föras vid styrelsemöte, justeras av två
-  styrelseledamöter och anslås senast två läsveckor efter mötet.
-
-\end{enumerate}
-
-
-
-%%% Flyttat hit kapitlet om ordföranden
-\subsection{Sektionsordförande}
-
-\subsubsection{Befogenheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsordförande utövar i brådskande fall sektionsstyrelsens befogenheter. Ordförandebeslut skall prövas på följande styrelsemöte.
-
-  \item I ordförandes frånvaro utövar vice sektionsordförande dennes
-  befogenheter och fullgör dennes plikter.
-
-\end{enumerate}
-
-\newpage
-
-
-\section{Nämnder}
-
-\subsection{Studienämnden}
-
-\subsubsection{Uppgift}
-
-\begin{itemize}
-
-  \item Studienämnden vid Fysikteknologsektionen, även kallad SNF, har till uppgift att
-  inom sektionen övervaka tillståndet och utvecklingen beträffande
-  studiefrågor, aktivt verka för god kurslitteratur, främja kontakten
-  med lärarna samt hålla god kontakt med sektionens medlemmar och
-  styrelse.
-
-\end{itemize}
-
-\subsubsection{Sammansättning}
-
-\begin{itemize}
-
-  \item Studienämnden består av studienämndsordförande och medlemmar
-  enligt reglemente angående studienämnden.
-
-\end{itemize}
-
-\subsubsection{Protokoll}
-
-\begin{itemize}
-
-  \item Protokoll skall föras vid studienämndsmöte, justeras av en
-  studie\-nämnds\-leda\-mot och anslås senast två läsveckor efter mötet.
-
-\end{itemize}
-
-\subsubsection{Studienämndsmöte}
-
-\begin{itemize}
-
-  \item Medlem i studienämnden har
-  närvaro-, yttrande-, förslags- och rösträtt på studienämndsmöte. 
-  
-  \item Sektionsmedlem har närvaro-, yttr\-ande- och förslagsrätt på studienämndsmöte.
-
-\end{itemize}
-
-\subsubsection{Rättigheter}
-
-\begin{itemize}
-
-  \item SNF äger rätt att i namn och emblem använda sektionens namn
-  och dess symboler.
-
-\end{itemize}
-
-\subsubsection{Skyldigheter}
-
-\begin{itemize}
-
-  \item SNF är skyldig att rätta sig efter sektionens stadgar,
-  reglemente samt Fysikteknologsektionens övriga styrdokument.
-
-  \item Det åligger SNF att lyda åläggande från sektionsstyrelsen att
-  vidta viss åtgärd eller utreda viss fråga som ligger inom SNF:s
-  verksamhetsområde.
-  
-  \item Det åligger SNF:s kassör och ordförande att presentera ett bokslut vid det första sektionsmötet efter att verksamhetsåret avslutats.
-  
-  \item Vid varje sektionsmöte skall studienämnden vara representerad.
-
-\end{itemize}
-
-\subsubsection{Ekonomi}
-
-\begin{itemize}
-
-  \item Studienämndens ekonomi och verksamhet granskas av sektionens
-  revisorer.
-
-  \item Studienämndens bokslut skall ingå i sektionens bokslut.
-
-\end{itemize}
-
-\newpage
-
+    \subsection{Valberedning}
+        \pgf Sektionens valberedning skall väljas av sektionsmötet. Valberedningen skall agera oberoende.
+          
+        \pgf Ledamot i valberedningen skall ej vara jävig gentemot dem den valbereder.
+
+    \subsection{Sammansättning} % ÄNDRAT: väljs internt -> internt väljs
+        \pgf Valberedningen består av 3–-7 ledamöter varav två internt väljs till ordförande respektive vice ordförande.
+      
+        % ÄNDRAT: Ledamöter -> Ledamot
+        \pgf Ledamot i valberedningen får ej vara medlem i sektionsstyrelsen eller någon kommitté eller nämnd som har representant i sektionsstyrelsen.
+    
+        \pgf I det fall då valberedningen ej är fulltalig och sektionsstyrelsen så anser lämpligt har sektionsstyrelsen möjlighet att temporärt välja kvarstående valberedningsposter inför varje valberedningsprocess. Dessa temporära medlemmar får inneha post i sektionsstyrelsen.
+    
+    \subsection{Beslutsförighet}
+        \pgf Vid valberedningens första sammanträde skall ordförande och vice ordförande väljas. Minst 3 av valberedningens ledamöter måste då vara närvarande.
+    
+        % ÄNDRAT: Slopade snedstreck (även pgf under)
+        \pgf När valberedningen sammanträder har max två medlemmar ur berörd styrelse, nämnd, kommitté, sektionsförening eller funktionär närvaro-, förslags-, yttrande- och rösträtt. Valberedningens  ordförande är ordförande samt sammankallande för valberedningen.
+    
+        \pgf Valberedningen är beslutsförig om dess ordförande, eller vice ordförande, minst två ytterligare ledamöter samt minst en representant för berörd styrelse, nämnd, kommitté eller funktionär är närvarande.
+    
+    \subsection{Ansvar}
+        \pgf Valberedningen ansvarar för nomineringar till samtliga poster i sektionsstyrelsen. Därutöver ansvarar valberedningen för nomineringar till förtroendeposter och övriga poster på sektionen enligt reglementet.
+    
+    \subsection{Anslag}
+        \pgf Valberedningens nomineringar skall anslås i enlighet med reglementet.
+
+
+\section{Sektionsstyrelsen}\label{sec:sektionsstyrelsen}
+    \subsection{Befogenheter}
+        \pgf Sektionsstyrelsen handhar i överensstämmelse med denna stadga, befintligt reglemente samt beslut tagna av sektionsmötet den verkställande ledningen av sektionens verksamhet. Sektionsstyrelsen är sektionsmötets ställföreträdare.
+    
+    \subsection{Sammansättning}
+        \pgf Sektionsstyrelsen består av sektionsordförande, vice sektionsordförande, sektionskassör samt övriga ledamöter enligt reglemente.
+        %kärnstyret är ej omnämnt någon annanstans i stadgan så det känns onödigt att introducera det här. Det är även värt att tillåta fler än en extra ledamot i kärnstyret och då låta det regleras i reglemente. Sekreteraren regleras inte någon annanstans i stadgan heller så eventuellt kan man utelämna den posten här också
+    
+    \subsection{Ansvar}
+        \pgf Sektionsstyrelsen ansvarar inför sektionsmötet för sektionens verksamhet och sektionens ekonomi.
+    
+    \subsection{Firmatecknande}
+        \pgf Sektionsordförande samt sektionskassör tecknar sektionens firma var för sig.
+    
+    \subsection{Sammanträden}
+        \pgf  Sektionsstyrelsen sammanträder minst tre gånger per läsperiod.
+    
+        \pgf Sektionsstyrelsen sammanträder på kallelse av sektionsordförande.
+    
+    \subsection{Beslutsförighet}
+        \pgf  Sektionsstyrelsen är beslutsmässigt om sektionsordförande eller vice sektionsordförande och sammanlagt mer än hälften av sektionsstyrelsens ledamöter är närvarande.
+    
+    \subsection{Överklagande}
+        \pgf Beslut av sektionsstyrelsen som strider mot kårens eller sektionens stadga, reglemente och/eller policy får undanröjas av kårfullmäktige. Sådant beslut skall tas upp till prövning om det begärs av en kårmedlem då det rör kårens stadga, eller sektionsmedlem då det rör sektionens stadga.
+    
+    \subsection{Protokoll}
+        \pgf Protokoll skall föras vid styrelsemöte, justeras av två styrelseledamöter och anslås senast två läsveckor efter mötet.
+    
+    \subsection{Sektionsordförande}
+        \pgf Sektionsordförande utövar i brådskande fall sektionsstyrelsens befogenheter. Ordförandebeslut skall prövas på följande styrelsemöte.
+    
+        \pgf I ordförandes frånvaro utövar vice sektionsordförande dennes befogenheter och fullgör dennes plikter.
+
+
+\section{Studienämnden} % ÄNDRAT: Nämnder (med subsection Studienämnden) -> Studienämnden
+    \subsection{Uppgift}
+        \pgf Studienämnden vid Fysikteknologsektionen, även kallad SNF, har till uppgift att inom sektionen övervaka tillståndet och utvecklingen beträffande studiefrågor, aktivt verka för god kurslitteratur, främja kontakten med lärarna samt hålla god kontakt med sektionens medlemmar och styrelse.
+        
+    \subsection{Sammansättning}
+        \pgf Studienämnden består av studienämndsordförande, studienämndskassör och medlemmar enligt reglemente angående studienämnden.
+        
+    \subsection{Protokoll}
+        \pgf Protokoll skall föras vid studienämndsmöte, justeras av en studienämndsledamot och anslås senast två läsveckor efter mötet.
+        
+    \subsection{Studienämndsmöte}
+        \pgf Medlem i studienämnden har närvaro-, yttrande-, förslags- och rösträtt på studienämndsmöte. 
+          
+        \pgf Sektionsmedlem har närvaro-, yttrande- och förslagsrätt på studienämndsmöte.
+        
+    \subsection{Rättigheter}
+        \pgf SNF äger rätt att i namn och emblem använda sektionens namn och dess symboler.
+        
+    \subsection{Skyldigheter}
+        \pgf SNF är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument.
+        
+        \pgf Det åligger SNF att lyda åläggande från sektionsstyrelsen att vidta viss åtgärd eller utreda viss fråga som ligger inom SNF:s verksamhetsområde.
+          
+        \pgf Det åligger SNF:s kassör och ordförande att presentera ett bokslut vid det första sektionsmötet efter att verksamhetsåret avslutats.
+          
+        \pgf Vid varje sektionsmöte skall studienämnden vara representerad.
+        
+    \subsection{Ekonomi}
+        \pgf Studienämndens ekonomi och verksamhet granskas av sektionens revisorer.
+        
+        \pgf Studienämndens bokslut skall ingå i sektionens bokslut.
 
 
 \section{Kommittéer}
+    \subsection{Definition}
+        \pgf Sektionskommitté på sektionen skall ha ett i reglemente fastställt antal förtroendeposter.
+        
+        \pgf Sektionskommitté på sektionen kan ha ett i reglementet fastställt antal övriga medlemmar.
+        
+        \pgf Förtroendeposter tillsätts av sektionsmötet på förslag av valberedningen.
+        
+        \pgf Övriga medlemmar fastslås i enlighet med reglementet.
+        
+        \pgf Sektionskommitté skall verka för sektionens bästa och ha en i reglementet fastslagen uppgift.
+        
+    \subsection{Rättigheter}
+        \pgf Sektionskommittéer äger rätt att i namn och emblem använda sektionens namn och dess symboler.
+        
+    \subsection{Skyldigheter}
+        \pgf Sektionskommitté är skyldig att rätta sig efter sektionens stadgar,  reglemente samt Fysikteknologsektionens övriga styrdokument.
+          
+        \pgf Vid sektionsmöte skall sektionskommittén vara representerad.
+        
+        \pgf Det åligger sektionskommitté att lyda åläggande att vidta viss åtgärd eller utreda viss fråga, om denna kan anses ligga inom kommitténs verksamhetsområde, från sektionsstyrelsen.
+        
+        \pgf Det åligger sektionskommitténs kassör och ordförande att presentera ett bokslut vid det första sektionsmötet efter verksamhetsårets slut.
+        
+    \subsection{Ekonomi}
+        \pgf Sektionskommittéernas verksamhet och ekonomi granskas av sektionens revisorer.
+        
+        \pgf Sektionskommittéernas bokslut skall ingå i sektionens bokslut.
+        
+    \subsection{Förteckning}
+        \pgf Sektionens kommittéer är listade i reglementet.
 
-\subsection{Definition}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionskommitté på sektionen skall ha ett i reglemente
-  fastställt antal förtroendeposter.
-
-  \item Sektionskommitté på sektionen kan ha ett i reglementet
-  fastställt antal övriga medlemmar.
-
-  \item Förtroendeposter tillsätts av sektionsmötet på förslag av
-  valberedningen.
-
-  \item Övriga medlemmar fastslås i enlighet med reglementet.
-
-  \item Sektionskommitté skall verka för sektionens bästa och ha en i
-  reglementet fastslagen uppgift.
-
-\end{enumerate}
-
-
-\subsection{Rättigheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionskommittéer äger rätt att i namn och emblem använda
-  sektionens namn och dess symboler.
-
-\end{enumerate}
-
-\subsection{Skyldigheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-
-  \item Sektionskommitté är skyldig att rätta sig efter sektionens stadgar,  reglemente samt Fysikteknologsektionens övriga styrdokument.
-  
-  \item Vid sektionsmöte skall sektionskommittén vara representerad.
-
-  \item Det åligger sektionskommitté att lyda åläggande att vidta viss
-  åtgärd eller utreda viss fråga, om denna kan anses ligga inom
-  kommitténs verksamhetsområde, från sektionsstyrelsen.
-
-  \item Det åligger sektionskommitténs kassör och ordförande att
-  presentera ett bokslut vid det första sektionsmötet efter verksamhetsårets slut.
-
-\end{enumerate}
-
-\subsection{Ekonomi}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionskommittéernas verksamhet och ekonomi granskas av
-  sektionens revisorer.
-
-  \item Sektionskommittéernas bokslut skall ingå i sektionens bokslut.
-
-\end{enumerate}
-
-\subsection{Förteckning}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens kommittéer är listade i reglementet.
-
-\end{enumerate}
-
-\newpage
 
 \section{Sektionsföreningar}
+    \subsection{Definition}
+        \pgf Sektionsförening på sektionen skall ha ett i reglemente fastställt antal förtroendeposter.
+        
+        \pgf Övriga medlemmar tecknas i reglementet.
+        
+        \pgf Medlemmar tillsätts enligt reglementet.
+        
+        \pgf Sektionsförening skall verka för sektionens bästa och ha en i reglementet fastslagen uppgift.
+        
+    \subsection{Rättigheter}
+        \pgf Sektionsföreningar äger rätt att i namn och emblem använda sektionens namn och dess symboler.
+        
+    \subsection{Skyldigheter}
+        \pgf Sektionsförening är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument.
+        
+        \pgf Det åligger sektionsförening att lyda åläggande, att vidta åtgärd eller utreda viss fråga om denna kan anses ligga inom föreningens verksamhetsåliggande, från sektionsstyrelsen.
+        
+        \pgf Bokslut presenteras enligt reglementet.
+        
+    \subsection{Ekonomi}
+        \pgf Sektionsföreningens verksamhet och ekonomi granskas av sektionens revisorer.
+        
+        \pgf Sektionsföreningens bokslut ingår i sektionens bokslut.
+        
+    \subsection{Förteckning}
+        \pgf Sektionsföreningar är listade i reglementet.
 
-\subsection{Definition}
-\begin{enumerate}[\thesubsection.1]
-    \item Sektionsförening på sektionen skall ha ett i reglemente fastställt antal förtroendeposter.
-    \item Övriga medlemmar tecknas i reglementet.
-    \item Medlemmar tillsätts enligt reglementet.
-    \item Sektionsförening skall verka för sektionens bästa och ha en i reglementet fastslagen uppgift.
-\end{enumerate}
-
-\subsection{Rättigheter}
-\begin{enumerate}[\thesubsection.1]
-    \item Sektionsföreningar äger rätt att i namn och emblem använda sektionens namn och dess symboler.
-\end{enumerate}
-
-\subsection{Skyldigheter}
-\begin{enumerate}[\thesubsection.1]
-    \item Sektionsförening är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument.
-    \item Det åligger sektionsförening att lyda åläggande, att vidta åtgärd eller utreda viss fråga om denna kan anses ligga inom föreningens verksamhetsåliggande, från sektionsstyrelsen.
-    \item Bokslut presenteras enligt reglementet.
-\end{enumerate}
-
-\subsection{Ekonomi}
-\begin{enumerate}[\thesubsection.1]
-    \item Sektionsföreningens verksamhet och ekonomi granskas av sektionens revisorer.
-    \item Sektionsföreningens bokslut ingår i sektionens bokslut.
-\end{enumerate}
-
-\subsection{Förteckning}
-\begin{enumerate}[\thesubsection.1]
-    \item Sektionsföreningar är listade i reglementet.
-\end{enumerate}
-
-\newpage
 
 \section{Funktionärer}
-
-\subsection{Definition}
-%\uline{Sektionens funktionärer avser förtroendevalda och anställda.}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsfunktionär på sektionen skall finnas enligt
-  reglemente.
-
-  \item Sektionsfunktionär tillsätts av sektionsmötet.
-
-  \item Sektionsfunktionär skall verka för sektionens bästa och ha en
-  i reglemente fastslagen uppgift.
-
-  \item Sektionsfunktionärer betraktas ej som förtroendevalda om ej annorlunda specificerats i reglementet.
-
-\end{enumerate}
-
-\subsection{Rättigheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsfunktionär äger rätt att i namn och emblem använda
-  sektionens namn och dess symboler.
-
-\end{enumerate}
-
-\subsection{Skyldigheter}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsfunktionär är skyldig att rätta sig efter sektionens
-  stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument. 
-
-  \item Det åligger sektionsfunktionär att lyda åläggande från
-  sektions\-styrel\-sen att vidta viss åtgärd eller utreda viss fråga, om denna kan anses ligga inom funktionärens verksamhetsområde.
-
-\end{enumerate}
-
-\subsection{Ekonomi}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionsfunktionärens ekonomi sköts av sektionsstyrelsen.
-
-\end{enumerate}
-
-\subsection{Förteckning}
-
-\begin{enumerate}[\thesubsection.1]
-
-
-\item Sektionens funktionärer är listade i reglementet.
-\end{enumerate}
-
-\newpage
-
+    \subsection{Definition}
+        \pgf Sektionsfunktionär på sektionen skall finnas enligt reglemente.
+        
+        \pgf Sektionsfunktionär tillsätts av sektionsmötet.
+        
+        \pgf Sektionsfunktionär skall verka för sektionens bästa och ha en i reglemente fastslagen uppgift.
+        
+        \pgf Sektionsfunktionärer betraktas ej som förtroendevalda om ej annorlunda specificerats i reglementet.
+        
+    \subsection{Rättigheter}
+        \pgf Sektionsfunktionär äger rätt att i namn och emblem använda sektionens namn och dess symboler.
+        
+    \subsection{Skyldigheter}
+        \pgf Sektionsfunktionär är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument. 
+        
+        \pgf Det åligger sektionsfunktionär att lyda åläggande från sektionsstyrelsen att vidta viss åtgärd eller utreda viss fråga, om denna kan anses ligga inom funktionärens verksamhetsområde.
+        
+    \subsection{Ekonomi}
+        \pgf Sektionsfunktionärens ekonomi sköts av sektionsstyrelsen.
+        
+    \subsection{Förteckning}
+        \pgf Sektionens funktionärer är listade i reglementet.
 
 
 \section{Intresseföreningar}
-
-
-\subsection{Definition}
-
-\begin{itemize}
-
-  \item En intresseförening på sektionen är en samman\-slutning av sektions\-medlemmar med ett gemensamt intresse.
-
-  \item Intresseföreningen skall verka för sektionens bästa och ha en
-  i reglementet fastslagen uppgift.
-
-\end{itemize}
-
-\subsection{Grundkrav}
-
-\begin{itemize}
-
-  \item Intresseförening skall ha en av sektionsstyrelsen godkänd stadga.
-  
-   \item Intresseförening skall ha en styrelse. Minst två tredjedelar av styrelsledamöterna skall vara sektionsmedlemmar.
-
-\end{itemize}
-
-\subsection{Intresseföreningsstatus}
-
-\begin{itemize}
-
-  \item Intresseförenings status beviljas och fråntas av
-  sektionsmötet.
-
-\end{itemize}
-
-\subsection{Rättigheter}
-
-\begin{itemize}
-
-  \item Intresseförening äger rätt att i namn och emblem använda
-  sektionens namn och symboler.
-
-  \item Intresseförening äger rätt att utnyttja av sektionen erbjudna
-  tjänster.
-
-\end{itemize}
-
-\subsection{Skyldigheter}
-
-\begin{itemize}
-
-  
-  \item Intresseförening är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument.
-
-  
-  \item Vid sektionsmöte skall intresseförening representeras av minst en representant från styrelsen.
-
-\end{itemize}
-
-\subsection{Ekonomi}
-
-\begin{itemize}
-
-  \item Intresseförening skall ha en fristående ekonomi.
-
-  \item Intresseförenings verksamhet och ekonomi granskas, utöver deras egna revisorer, av
-  sektionens revisorer.
-
-  \item Senast tre veckor efter att årsmötet godkänt verksamhetsberättelsen för föregående år skall denna lämnas till sektionsstyrelsen och frågan om ansvarsfrihet för intresseföreningens aktuella styrelse skall behandlas.
-  
-  \item{Senast tre veckor efter att intresseföreningens revisors revisionsberättelse godkänts av årsmötet skall av sektionsrevisorerna begärt material lämnas till dessa.}
-
-\end{itemize}
-
-\subsection{Medlemskap}
-
-\begin{itemize}
-
-  \item Varje sektionsmedlem skall ha rätt till medlemskap. Dock kan
-  förenings\-med\-lem som motverkar föreningens syfte uteslutas.
-  
-  \item Styrelsen kan besluta om medlemskap för någon som ej är medlem i Fysikteknologsektionen så länge dylika medlemmar ej utgör mer än hälften av föreningens medlemmar.
-  
-
-\end{itemize}
-
-\subsection{Förteckning}
-
-\begin{itemize}
-
-  \item Sektionens intresseföreningar är listade i reglementet.
-
-\end{itemize}
-
-\newpage
-
-\section{Sektionens ekonomi}
-\subsection{Sektionsavgift}
-\subsubsection{Allmänt}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Varje sektionsmedlem ska erlägga beslutad sektionsavgift till
-  Fysikteknologsektionen.
-
-  \item Sektionsavgiften skall vara densamma för alla årskurser.
-
-\end{enumerate}
-
-
+    \subsection{Definition}
+        \pgf En intresseförening på sektionen är en sammanslutning av sektionsmedlemmar med ett gemensamt intresse.
+        
+        \pgf Intresseföreningen skall verka för sektionens bästa och ha en i reglementet fastslagen uppgift.
+        
+    \subsection{Grundkrav}
+        \pgf Intresseförening skall ha en av sektionsstyrelsen godkänd stadga.
+          
+        \pgf Intresseförening skall ha en styrelse. Minst två tredjedelar av styrelsledamöterna skall vara sektionsmedlemmar.
+        
+    \subsection{Intresseföreningsstatus}
+        \pgf Intresseförenings status beviljas och fråntas av sektionsmötet.
+        
+    \subsection{Rättigheter}
+        \pgf Intresseförening äger rätt att i namn och emblem använda sektionens namn och symboler.
+        
+        \pgf Intresseförening äger rätt att utnyttja av sektionen erbjudna tjänster.
+        
+    \subsection{Skyldigheter}
+        \pgf Intresseförening är skyldig att rätta sig efter sektionens stadgar, reglemente samt Fysikteknologsektionens övriga styrdokument.
+        
+        \pgf Vid sektionsmöte skall intresseförening representeras av minst en representant från styrelsen.
+        
+    \subsection{Ekonomi}
+        \pgf Intresseförening skall ha en fristående ekonomi.
+        
+        \pgf Intresseförenings verksamhet och ekonomi granskas, utöver deras egna revisorer, av sektionens revisorer.
+        
+        \pgf Senast tre veckor efter att årsmötet godkänt verksamhetsberättelsen för föregående år skall denna lämnas till sektionsstyrelsen och frågan om ansvarsfrihet för intresseföreningens aktuella styrelse skall behandlas.
+          
+        \pgf Senast tre veckor efter att intresseföreningens revisors revisionsberättelse godkänts av årsmötet skall av sektionsrevisorerna begärt material lämnas till dessa.
+        
+    \subsection{Medlemskap}
+        \pgf Varje sektionsmedlem skall ha rätt till medlemskap. Dock kan föreningsmedlem som motverkar föreningens syfte uteslutas.
+          
+        \pgf Styrelsen kan besluta om medlemskap för någon som ej är medlem i Fysikteknologsektionen så länge dylika medlemmar ej utgör mer än hälften av föreningens medlemmar.
+        
+    \subsection{Förteckning}
+        \pgf Sektionens intresseföreningar är listade i reglementet.
 
 \section{Revision och ansvarsfrihet}
-\subsection{Revisorer}
-\begin{enumerate}[\thesubsection.1]
+    \subsection{Revisorer}
+        \pgf Sektionsmötet utser två lekmannarevisorer med uppgift att granska sektionens verksamhet och ekonomi.
+        
+        \pgf Revisor skall vara myndig.
+        
+        \pgf Revisor skall ej vara jävig gentemot de de granskar.
+          
+        \pgf Revisor kan ej vara medlem av sektionsstyrelsen under sitt verksamhetsår.
+          
+        \pgf Revisor kan ej inneha ekonomiskt ansvar inom sektionen.
+        
+        \pgf En revisor kan ej granska ekonomin för en kommitté, sektionsförening, nämnd eller sektionsstyrelse för ett år då denne var medlem av denna eller direkt påföljande år.
+          
+        \pgf I de fall då samtliga verksamheter inte kan granskas av ordinarie revisorer kan extra revisor väljas för att granska dessa verksamheter.
+          
+        \pgf Revisor behöver ej vara medlem av sektionen.
+          
+        \pgf Räkenskaper och övriga handlingar skall tillställas revisorerna senast 10 läsdagar före ordinarie sektionsmöte.
+        
+    \subsection{Revisionsberättelse}
+        \pgf Det åligger revisorerna att anslå revisionsberättelser senast tre läsdagar före ordinarie sektionsmöte.
+        
+        \pgf Revisionsberättelsen skall innehålla yttrande i fråga om ansvarsfrihet för berörda personer.
+        
+        \pgf Det åligger revisorerna att under året kontinuerligt granska räkenskaper och förvaltning.
+        
+    \subsection{Ansvarsfrihet}
+        \pgf Ansvarsfrihet är beviljad berörda personer då sektionsmötet fattat beslut om detta.
+        
+        \pgf Skall person med ekonomiskt ansvar på sektionen avgå före mandatperiodens slut, skall revision företagas.
 
-  \item Sektionsmötet utser två lekmannarevisorer med uppgift att granska sektionens verksamhet och ekonomi.
-
-  \item Revisor skall vara myndig.
-
-  \item Revisor skall ej vara jävig gentemot de de granskar.
-  
-  \item Revisor kan ej vara medlem av sektionsstyrelsen under sitt verksamhetsår.
-  
-  \item Revisor kan ej inneha ekonomiskt ansvar inom sektionen.
-
-  \item En revisor kan ej granska ekonomin för en kommitté, sektionsförening, nämnd eller sektionsstyrelse för ett år då denne var medlem av denna eller direkt påföljande år.
-  
-  \item I de fall då samtliga verksamheter inte kan granskas av ordinarie revisorer kan extra revisor väljas för att granska dessa verksamheter.
-  
-  \item Revisor behöver ej vara medlem av sektionen.
-  
-  \item Räkenskaper och övriga handlingar skall tillställas revisorerna senast 10 läsdagar före ordinarie sektionsmöte.
-
-\end{enumerate}
-
-
-
-\subsection{Revisionsberättelse}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Det åligger revisorerna att anslå revisionsberättelser senast tre läsdagar före
-  ordinarie sektionsmöte.
-
-  \item Revisionsberättelsen skall innehålla yttrande i fråga om
-  ansvarsfrihet för berörda personer.
-
-  \item Det åligger revisorerna att under året kontinuerligt granska
-  rä\-ken\-skaper och förvaltning.
-
-\end{enumerate}
-
-
-
-\subsection{Ansvarsfrihet}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Ansvarsfrihet är beviljad berörda personer då sektionsmötet
-  fattat beslut om detta.
-
-  \item Skall person med ekonomiskt ansvar på sektionen avgå
-  före mandatperiodens slut, skall revision företagas.
-
-\end{enumerate}
-
-\newpage
 
 \section{Styrdokument}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Förutom denna stadga finns reglemente och övriga styrdokument i enlighet med reglementet. 
-  
-\end{enumerate}
-
-
-
-\subsection{Stadgeändringar}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Ändring av eller tillägg till denna stadga inklusive dess
-  bilagor kan endast göras av sektionsmötet och om minst 2/3 av de
-  närvarande är om beslutet ense under två på varandra följande
-  ordinarie sektionsmöten och den föreslagna lydelsen varit anslagen
-  tillsammans med kallelsen.
-
-  \item Ändring av eller tillägg till denna stadga skall godkännas av
-   Chalmers Studentkårs styrelse.
-
-\end{enumerate}
-
-
-
-\subsection{Reglementesändringar}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Ändring av eller tillägg till sektionens reglemente inklusive
-  dess bilagor kan endast göras av sektionsmötet och om minst 2/3 av
-  de närvarande är om beslutet ense.
-
-\end{enumerate}
-
-
-
-\subsection{Tolkningstvister}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Uppstår tolkningstvist om dessa stadgars tolkning skall frågan
-  hän\-skju\-tas till sektionens inspektor.
-  
-  \item Vid konflikt med reglemente eller Fysikteknologsektionens övriga styrdokument har stadgan företräde.
-
-\end{enumerate}
-
-
-
-\subsection{Protokoll och officiella kommunikationskanaler}
-\subsubsection{Allmänt}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Protokoll som förs i sektionens olika organ skall innehålla
-  anteckningar om ärendenas art, samtliga ställda och ej återtagna
-  yrkanden, beslut samt särskilda yttranden och reservationer.
-
-  \item Beslut som fattas inom sektionen och berör Chalmers Studentkår i dess helhet skall meddelas Chalmers Studentkårs styrelse.
-
-\end{enumerate}
-
-\subsubsection{Officiella kommunikationskanaler}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens officiella kommunikationskanaler utgörs av sektionens hemsida samt sektionens officiella
-  anslagstavla.
-
-  \item Meddelanden och beslut är behörigt anslagna då de anslås 
-  via någon av sektionens officiella kommunikationskanaler.
-
-\end{enumerate}
-
-
-
-\subsection{Originalstadgar}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Originalstadgar tillhandahas av sektionsstyrelsen.
-
-\end{enumerate}
-
+    \subsection{Allmänt}
+        \pgf Förutom denna stadga finns reglemente och övriga styrdokument i enlighet med reglementet. 
+        
+    \subsection{Stadgeändringar}
+        \pgf Ändring av eller tillägg till denna stadga inklusive dess bilagor kan endast göras av sektionsmötet och om minst 2/3 av de närvarande är om beslutet ense under två på varandra följande ordinarie sektionsmöten och den föreslagna lydelsen varit anslagen tillsammans med kallelsen.
+        
+        \pgf Ändring av eller tillägg till denna stadga skall godkännas av Chalmers Studentkårs styrelse.
+        
+    \subsection{Reglementesändringar}
+        \pgf Ändring av eller tillägg till sektionens reglemente inklusive dess bilagor kan endast göras av sektionsmötet och om minst 2/3 av de närvarande är om beslutet ense.
+        
+    \subsection{Tolkningstvister}
+        \pgf Uppstår tolkningstvist om dessa stadgars tolkning skall frågan hänskjutas till sektionens inspektor.
+          
+        \pgf Vid konflikt med reglemente eller Fysikteknologsektionens övriga styrdokument har stadgan företräde.
+        
+    \subsection{Protokoll och officiella kommunikationskanaler} % ÄNDRAT: Tog bort subsubsections Allmänt och Officiella kommunikationskanaler
+        \pgf Protokoll som förs i sektionens olika organ skall innehålla anteckningar om ärendenas art, samtliga ställda och ej återtagna yrkanden, beslut samt särskilda yttranden och reservationer.
+        
+        \pgf Beslut som fattas inom sektionen och berör Chalmers Studentkår i dess helhet skall meddelas Chalmers Studentkårs styrelse.
+        
+        \pgf Sektionens officiella kommunikationskanaler utgörs av sektionens hemsida samt sektionens officiella anslagstavla.
+        
+        \pgf Meddelanden och beslut är behörigt anslagna då de anslås via någon av sektionens officiella kommunikationskanaler.
+        
+    \subsection{Originalstadgar}
+        \pgf Originalstadgar tillhandahas av sektionsstyrelsen.
 
 
 \section{Sektionens upplösande}
+    \subsection{Beslut om upplösande}
+        \pgf Sektionen upplöses genom beslut på två på varandra följande sektionsmöten med minst 3/4 majoritet och minst 25 bifallande medlemmar.
+        
+    \subsection{Tillgångar}
+        \pgf Om sektionsmötet beslutar att upplösa sektionen skall samtliga dess tillgångar och skulder, som framgår av upprättad balansräkning, i och med upplösning tillfalla Chalmers Studentkår.
+        
+    \subsection{Nystart}
+        \pgf I det fall medlen utgörs av tillgångar skall Chalmers Studentkår fondera och förvalta dessa till ny sektion bildats för studerande på utbildningsprogrammet för Teknisk fysik och/eller Teknisk matematik eller motsvarande.
 
-\subsection{Beslut om upplösande}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionen upplöses genom beslut på två på varandra följande
-  sektionsmöten med minst 3/4 majoritet och minst 25 bifallande
-  medlemmar.
-
-\end{enumerate}
-
-\subsection{Tillgångar}
-\begin{enumerate}[\thesubsection.1]
-
-  \item Om sektionsmötet beslutar att upplösa sektionen skall samtliga
-  dess tillgångar och skulder, som framgår av upprättad balansräkning,
-  i och med upplösning tillfalla Chalmers Studentkår.
-
-\end{enumerate}
-
-\subsection{Nystart}
-\begin{enumerate}[\thesubsection.1]
-
-  \item I det fall medlen utgörs av tillgångar skall Chalmers Studentkår fondera och förvalta dessa till ny sektion bildats för studerande på utbildningsprogrammet för Teknisk Fysik och/eller Teknisk Matematik eller motsvarande.
-
-\end{enumerate}
-
-\newpage
 
 \section{Skyddshelgon}
+    \subsection{Definition}
+        \pgf Sektionens skyddshelgon är Dragos.
+        
+        \pgf Sektionens medlemmar vördar Dragos.
 
-\subsection{Definition}
-
-\begin{enumerate}[\thesubsection.1]
-
-  \item Sektionens skyddshelgon är Dragos.
-
-  \item Sektionens medlemmar vördar Dragos.
-
-\end{enumerate}
-
-%\newpage
-
+\end{itemize}
 \end{document}
