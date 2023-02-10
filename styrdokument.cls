@@ -119,7 +119,7 @@
   \vspace{1.25em}
   
 Fortsatta ändringar finns tillgängliga på \\
-  \href{https://github.com/Fysikteknologsektionen/Stadga/commits/master}{\texttt{github.com/Fysikteknologsektionen/Stadga/}}\\[5mm]
+  \href{https://github.com/Fysikteknologsektionen/\@title/commits/main}{\texttt{github.com/Fysikteknologsektionen/\@title/}}\\[5mm]
   Fastställd hösten 2022 \\
   \small{Göteborg}\\
   \small{\@date}
